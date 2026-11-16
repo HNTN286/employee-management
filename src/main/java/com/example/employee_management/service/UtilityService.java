@@ -11,7 +11,7 @@ public class UtilityService {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    /** "  nguyen   van a " -> "Nguyen Van A" */
+    /** " nguyen van a " -> "Nguyen Van A" */
     public String formatName(String raw) {
         if (raw == null || raw.isBlank()) {
             return "";
@@ -24,5 +24,9 @@ public class UtilityService {
     /** Sinh mã nhân viên tự động: EMP001, EMP002, ... */
     public String generateEmployeeCode() {
         return String.format("EMP%03d", counter.incrementAndGet());
+    }
+
+    public String generateEmployeeCode(Long id) {
+        return String.format("EMP%03d", id);
     }
 }
