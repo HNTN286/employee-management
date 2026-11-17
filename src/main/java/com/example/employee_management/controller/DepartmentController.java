@@ -3,6 +3,7 @@ package com.example.employee_management.controller;
 import com.example.employee_management.dto.DepartmentRequest;
 import com.example.employee_management.model.Department;
 import com.example.employee_management.service.DepartmentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,8 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Department> create(@RequestBody DepartmentRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(departmentService.create(request.name()));
+    public ResponseEntity<Department> create(@Valid @RequestBody DepartmentRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(departmentService.create(request.name()));
     }
 }
