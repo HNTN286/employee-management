@@ -3,6 +3,7 @@ package com.example.employee_management.controller;
 import com.example.employee_management.dto.EmployeeRequest;
 import com.example.employee_management.dto.EmployeeResponse;
 import com.example.employee_management.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    // Tìm kiếm: GET /api/employees?name=an&department=IT
     @GetMapping
     public List<EmployeeResponse> getAll(@RequestParam(required = false) String name,
                                          @RequestParam(required = false) String department) {
@@ -40,12 +40,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeResponse> create(@RequestBody EmployeeRequest request) {
+    public ResponseEntity<EmployeeResponse> create(@Valid @RequestBody EmployeeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.create(request));
     }
 
     @PutMapping("/{id}")
-    public EmployeeResponse update(@PathVariable Long id, @RequestBody EmployeeRequest request) {
+    public EmployeeResponse update(@PathVariable Long id,
+                                   @Valid @RequestBody EmployeeRequest request) {
         return employeeService.update(id, request);
     }
 

@@ -1,4 +1,7 @@
 package com.example.employee_management.dto;
 
-public record DepartmentRequest(String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record DepartmentRequest(
+        @NotBlank(message = "Tên phòng ban không được để trống") String name) {
 }
