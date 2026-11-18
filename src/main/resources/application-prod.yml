@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: "${DB_URL:jdbc:mysql://localhost:3307/employee_db?createDatabaseIfNotExist=true&serverTimezone=UTC}"
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.example.employee_management: INFO
+  file:
+    name: logs/app.log

@@ -31,7 +31,7 @@
                 <th>Họ tên</th>
                 <th>Email</th>
                 <th>Phòng ban</th>
-                <th></th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -41,10 +41,13 @@
                 <td th:text="${e.email}"></td>
                 <td th:text="${e.departmentName}"></td>
                 <td>
-                    <form th:action="@{/employees/delete/{id}(id=${e.id})}" method="post"
-                        onsubmit="return confirm('Xóa nhân viên này?')">
-                        <button class="btn btn-sm btn-danger">Xóa</button>
-                    </form>
+                    <div class="d-flex gap-1">
+                        <a th:href="@{/employees/edit/{id}(id=${e.id})}" class="btn btn-sm btn-warning">Sửa</a>
+                        <form th:action="@{/employees/delete/{id}(id=${e.id})}" method="post"
+                            onsubmit="return confirm('Xóa nhân viên này?')">
+                            <button class="btn btn-sm btn-danger">Xóa</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(employees)}">
