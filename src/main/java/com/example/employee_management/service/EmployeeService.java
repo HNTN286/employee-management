@@ -10,6 +10,7 @@ import com.example.employee_management.repository.DepartmentRepository;
 import com.example.employee_management.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +27,8 @@ public class EmployeeService {
     private final UtilityService utilityService;
 
     public EmployeeService(EmployeeRepository employeeRepository,
-                           DepartmentRepository departmentRepository,
-                           UtilityService utilityService) {
+            DepartmentRepository departmentRepository,
+            UtilityService utilityService) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.utilityService = utilityService;
@@ -48,6 +49,7 @@ public class EmployeeService {
         return EmployeeResponse.from(getEntity(id));
     }
 
+    @CacheEvict(cacheNames = "employeeStats", allEntries = true)
     @Transactional
     public EmployeeResponse create(EmployeeRequest request) {
         if (employeeRepository.existsByEmailIgnoreCase(request.getEmail())) {
@@ -73,6 +75,7 @@ public class EmployeeService {
         return EmployeeResponse.from(employee);
     }
 
+    @CacheEvict(cacheNames = "employeeStats", allEntries = true)
     @Transactional
     public void delete(Long id) {
         Employee employee = getEntity(id);

@@ -5,3 +5,17 @@ spring:
     active: dev
   jpa:
     open-in-view: false
+  cache:
+    type: caffeine
+    cache-names: employeeStats
+    caffeine:
+      spec: expireAfterWrite=60s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
