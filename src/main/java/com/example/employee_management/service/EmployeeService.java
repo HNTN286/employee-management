@@ -8,6 +8,8 @@ import com.example.employee_management.model.Department;
 import com.example.employee_management.model.Employee;
 import com.example.employee_management.repository.DepartmentRepository;
 import com.example.employee_management.repository.EmployeeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +19,15 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class EmployeeService {
 
+    private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
+
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final UtilityService utilityService;
 
     public EmployeeService(EmployeeRepository employeeRepository,
-            DepartmentRepository departmentRepository,
-            UtilityService utilityService) {
+                           DepartmentRepository departmentRepository,
+                           UtilityService utilityService) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.utilityService = utilityService;
@@ -53,6 +57,8 @@ public class EmployeeService {
         apply(employee, request);
         Employee saved = employeeRepository.save(employee);
         saved.setCode(utilityService.generateEmployeeCode(saved.getId()));
+        log.info("Thêm nhân viên: id={}, code={}, email={}",
+                saved.getId(), saved.getCode(), saved.getEmail());
         return EmployeeResponse.from(saved);
     }
 
@@ -63,12 +69,15 @@ public class EmployeeService {
             throw new DuplicateResourceException("Email đã tồn tại: " + request.getEmail());
         }
         apply(employee, request);
+        log.info("Cập nhật nhân viên: id={}", id);
         return EmployeeResponse.from(employee);
     }
 
     @Transactional
     public void delete(Long id) {
-        employeeRepository.delete(getEntity(id));
+        Employee employee = getEntity(id);
+        employeeRepository.delete(employee);
+        log.info("Xóa nhân viên: id={}", id);
     }
 
     private Employee getEntity(Long id) {
