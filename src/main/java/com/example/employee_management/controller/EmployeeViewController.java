@@ -5,6 +5,7 @@ import com.example.employee_management.dto.EmployeeResponse;
 import com.example.employee_management.exception.DuplicateResourceException;
 import com.example.employee_management.service.DepartmentService;
 import com.example.employee_management.service.EmployeeService;
+import com.example.employee_management.service.StatisticsService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +24,21 @@ public class EmployeeViewController {
 
     private final EmployeeService employeeService;
     private final DepartmentService departmentService;
+    private final StatisticsService statisticsService;
 
     public EmployeeViewController(EmployeeService employeeService,
-            DepartmentService departmentService) {
+            DepartmentService departmentService,
+            StatisticsService statisticsService) {
         this.employeeService = employeeService;
         this.departmentService = departmentService;
+        this.statisticsService = statisticsService;
+    }
+
+    @GetMapping("/statistics")
+    public String statistics(Model model) {
+        model.addAttribute("totalEmployees", statisticsService.countEmployees());
+        model.addAttribute("departmentStats", statisticsService.countByDepartment());
+        return "employees/statistics";
     }
 
     @GetMapping("/list")
